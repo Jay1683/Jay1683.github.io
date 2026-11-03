@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jay Dhumal, AI Engineer</title>
+<meta name="description" content="AI Engineer in Mumbai. Agentic AI, RAG systems, Text to SQL agents, enterprise LLM gateways and document intelligence on Amazon Bedrock and Azure AI Foundry.">
+<meta name="author" content="Jay Dhumal">
+<meta property="og:title" content="Jay Dhumal, AI Engineer">
+<meta property="og:description" content="Agentic AI, RAG systems and enterprise LLM governance on Bedrock and Azure AI Foundry.">
+<meta property="og:type" content="profile">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root{
+  --bg:#0b0b0c;
+  --bg-2:#0f0f11;
+  --ink:#ffffff;          /* full white: headings and anything emphatic */
+  --ink-dim:#dcdad6;      /* body copy, near white and clearly readable */
+  --ink-faint:#adaaa5;    /* dates, stacks, small caps labels */
+  --rule:rgba(255,255,255,.17);
+  --rule-soft:rgba(255,255,255,.10);
+
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"DM Sans",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+
+  --measure:64ch;
+  --ease:cubic-bezier(.22,.68,.24,1);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:96px;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font:300 18.5px/1.74 var(--sans);
+  letter-spacing:.005em;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ink);color:var(--bg)}
+:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+
+.wrap{width:min(1120px,100% - 56px);margin-inline:auto}
+
+/* ---- type scale ---------------------------------------------------- */
+.display{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(2.5rem,8.2vw,6.6rem);
+  line-height:1.04;letter-spacing:-.025em;
+  white-space:nowrap;          /* the name stays on one line at every width */
+}
+.display em{font-style:italic;letter-spacing:-.01em}
+h2{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(2rem,4.4vw,3.1rem);
+  line-height:1.08;letter-spacing:-.02em;
+}
+h3{font-family:var(--sans);font-weight:500;font-size:1.14rem;letter-spacing:-.005em}
+p{max-width:var(--measure)}
+
+.label{
+  font-family:var(--mono);font-size:.72rem;font-weight:400;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);
+}
+.label i{font-style:normal;color:var(--ink-dim)}
+
+/* ============================================================
+   Header
+   ============================================================ */
+header{
+  position:fixed;inset:0 0 auto 0;z-index:60;
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--ease),border-color .4s,backdrop-filter .4s;
+}
+header.stuck{background:rgba(11,11,12,.72);backdrop-filter:blur(18px) saturate(150%);border-bottom-color:var(--rule-soft)}
+.bar{display:flex;align-items:center;justify-content:flex-end;gap:34px;height:86px}
+nav.menu{display:flex;align-items:center;gap:34px}
+nav.menu a{
+  font-size:.91rem;font-weight:400;color:var(--ink-dim);
+  position:relative;padding:4px 0;transition:color .25s;
+}
+nav.menu a::after{
+  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:right;
+  transition:transform .35s var(--ease);
+}
+nav.menu a:hover{color:var(--ink)}
+nav.menu a:hover::after{transform:scaleX(1);transform-origin:left}
+.burger{display:none;width:44px;height:44px;background:none;border:0;cursor:pointer;position:relative}
+.burger span{position:absolute;left:12px;width:20px;height:1px;background:var(--ink);transition:transform .35s var(--ease)}
+.burger span:first-child{top:19px}.burger span:last-child{top:25px}
+.burger.open span:first-child{transform:translateY(3px) rotate(45deg)}
+.burger.open span:last-child{transform:translateY(-3px) rotate(-45deg)}
+
+/* ============================================================
+   Links: understated, no candy pills
+   ============================================================ */
+.ln{
+  position:relative;display:inline-flex;align-items:center;gap:9px;
+  font-size:.97rem;font-weight:400;color:var(--ink-dim);padding-bottom:5px;
+  transition:color .3s,gap .3s var(--ease);
+}
+.ln::after{
+  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease);
+}
+.ln:hover{color:var(--ink);gap:13px}
+.ln:hover::after{transform:scaleX(1);transform-origin:left}
+.ln svg{width:14px;height:14px;opacity:.6}
+.ln-row{display:flex;flex-wrap:wrap;gap:14px 34px;margin-top:44px}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero{padding:200px 0 104px;min-height:100svh;display:flex;align-items:center}
+.role{
+  margin-top:26px;font-family:var(--mono);font-size:.82rem;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);
+}
+.lede{margin-top:30px;font-size:1.15rem;color:var(--ink-dim);font-weight:300}
+.lede p + p{margin-top:19px}
+
+/* metrics: hairline row, serif numerals */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;
+  margin-top:72px;background:var(--rule-soft);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
+.metric{background:var(--bg);padding:26px 4px 24px}
+.metric b{display:block;font-family:var(--serif);font-weight:400;font-size:2.5rem;line-height:1;letter-spacing:-.02em}
+.metric span{display:block;margin-top:10px;font-size:.85rem;color:var(--ink-faint);letter-spacing:.01em}
+
+/* ============================================================
+   Sections
+   ============================================================ */
+section{padding:clamp(76px,8.5vw,116px) 0}
+.sec-head{display:grid;gap:16px;margin-bottom:54px;max-width:var(--measure)}
+.sec-head p{color:var(--ink-dim);font-size:1.11rem}
+.rule{height:1px;background:var(--rule-soft);margin:0}
+
+/* ---- panels: hairline-divided blocks, used by skills and credentials ---- */
+.panels{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+.panels--4{grid-template-columns:repeat(auto-fit,minmax(min(100%,238px),1fr))}
+.panels--5{grid-template-columns:repeat(auto-fit,minmax(min(100%,196px),1fr))}
+/* six categories sit as two clean rows of three, never a row with a hole in it */
+.panels--6{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.panel{background:var(--bg);padding:30px 28px;transition:background .35s var(--ease)}
+.panel:hover{background:var(--bg-2)}
+.panel > h3{font-family:var(--mono);font-size:.71rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:400;margin-bottom:20px}
+.panel ul{list-style:none;display:grid;gap:12px}
+.panel li{font-size:1.01rem;color:var(--ink-dim)}
+.panel li.row{display:flex;justify-content:space-between;gap:20px;align-items:baseline;
+  padding-bottom:12px;border-bottom:1px solid var(--rule-soft)}
+.panel li.row:last-child{border-bottom:0;padding-bottom:0}
+.panel li.row em{font-style:normal;font-family:var(--mono);font-size:.71rem;letter-spacing:.08em;
+  color:var(--ink-faint);white-space:nowrap}
+.edu{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 40px}
+.edu b{display:block;font-family:var(--serif);font-weight:400;font-size:1.55rem;letter-spacing:-.01em}
+.edu span{display:block;margin-top:7px;font-size:.97rem;color:var(--ink-faint)}
+.edu .marks{font-family:var(--serif);font-size:1.75rem;line-height:1;text-align:right}
+.edu .marks small{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);margin-top:9px}
+
+/* ---- experience ---- */
+.role-item{display:grid;grid-template-columns:200px 1fr;gap:14px 44px;
+  padding:38px 0;border-top:1px solid var(--rule-soft)}
+.role-item:last-child{border-bottom:1px solid var(--rule-soft)}
+.role-when{font-family:var(--mono);font-size:.76rem;letter-spacing:.1em;color:var(--ink-faint);padding-top:7px;line-height:1.9}
+.role-when span{display:block;color:var(--ink-faint);opacity:.7}
+.role-head{margin-bottom:18px}
+.role-head h3{display:inline}
+.role-head .org{font-family:var(--serif);font-style:italic;font-size:1.22rem;margin-left:4px}
+.role-body{list-style:none;display:grid;gap:11px;max-width:var(--measure)}
+.role-body li{position:relative;padding-left:22px;color:var(--ink-dim);font-size:1.06rem}
+.role-body li::before{content:"";position:absolute;left:3px;top:.72em;width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
+
+/* ---- projects ---- */
+.proj{display:grid;grid-template-columns:200px 1fr;gap:16px 44px;
+  padding:40px 0;border-top:1px solid var(--rule-soft);transition:background .4s var(--ease)}
+.proj:last-child{border-bottom:1px solid var(--rule-soft)}
+.proj:hover{background:linear-gradient(90deg,rgba(255,255,255,.03),transparent 70%)}
+.proj-when{font-family:var(--mono);font-size:.76rem;letter-spacing:.1em;color:var(--ink-faint);padding-top:10px}
+.proj h3{font-family:var(--serif);font-weight:400;font-size:1.72rem;letter-spacing:-.015em;line-height:1.15;margin-bottom:18px}
+.proj ul{list-style:none;display:grid;gap:11px;max-width:var(--measure);margin-bottom:24px}
+.proj li{position:relative;padding-left:22px;color:var(--ink-dim);font-size:1.06rem}
+.proj li::before{content:"";position:absolute;left:3px;top:.72em;width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
+.stack{font-family:var(--mono);font-size:.75rem;letter-spacing:.07em;color:var(--ink-faint);line-height:2}
+
+/* ---- case studies: client delivery, deliberately weightier than the project rows.
+       Boxed and padded rather than hairline separated, so the eye reads these first. ---- */
+.cases{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+.case{background:var(--bg);padding:44px 40px;display:grid;gap:24px;transition:background .4s var(--ease)}
+.case:hover{background:var(--bg-2)}
+.case h3{font-family:var(--serif);font-weight:400;font-size:1.78rem;letter-spacing:-.015em;line-height:1.14}
+.case .challenge{color:var(--ink);font-size:1.12rem;font-weight:400;line-height:1.62;max-width:var(--measure)}
+.case .block{display:grid;gap:15px}
+.case .block > .label{display:block}
+.case ul{list-style:none;display:grid;gap:11px;max-width:var(--measure)}
+.case li{position:relative;padding-left:22px;color:var(--ink-dim);font-size:1.06rem}
+.case li::before{content:"";position:absolute;left:3px;top:.72em;width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
+.case .stack{margin-top:2px}
+
+/* numeric results: the same hairline strip as the hero metrics, scaled down */
+.results{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--rule-soft);border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
+.results div{background:var(--bg);padding:22px 2px 20px;transition:background .4s var(--ease)}
+.case:hover .results div{background:var(--bg-2)}
+.results b{display:block;font-family:var(--serif);font-weight:400;font-size:2.15rem;line-height:1;letter-spacing:-.02em}
+.results span{display:block;margin-top:9px;font-size:.84rem;color:var(--ink-faint);line-height:1.5}
+
+/* ---- contact ---- */
+.closing{text-align:center;padding-block:clamp(86px,10vw,130px)}
+.closing h2{font-size:clamp(2.4rem,6.4vw,4.6rem);margin-bottom:26px}
+.closing p{margin:0 auto 52px;color:var(--ink-dim)}
+.closing .ln-row{justify-content:center;margin-top:0}
+
+footer{border-top:1px solid var(--rule-soft);padding:36px 0}
+.foot{display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.foot nav{display:flex;gap:26px}
+.foot a:hover{color:var(--ink)}
+
+/* ---- reveal ---- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media(max-width:860px){
+  .role-item,.proj{grid-template-columns:1fr;gap:12px}
+  .edu{flex-direction:column;align-items:flex-start}
+  .edu .marks{text-align:left}
+  .role-when,.proj-when{padding-top:0}
+  .role-when span{display:inline;margin-left:8px}
+}
+@media(max-width:720px){
+  .wrap{width:min(1120px,100% - 36px)}
+  body{font-size:17.5px}
+  .burger{display:block}
+  nav.menu{
+    position:absolute;inset:86px 0 auto 0;flex-direction:column;align-items:flex-start;gap:0;
+    padding:10px 28px 28px;background:rgba(11,11,12,.97);backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--rule-soft);
+    visibility:hidden;opacity:0;transform:translateY(-10px);
+    transition:opacity .3s,transform .3s var(--ease),visibility .3s;
+  }
+  nav.menu.open{visibility:visible;opacity:1;transform:none}
+  nav.menu a{width:100%;padding:16px 0;font-size:1.05rem;color:var(--ink);border-bottom:1px solid var(--rule-soft)}
+  nav.menu a::after{display:none}
+  .hero{padding:140px 0 90px;min-height:auto}
+  .ln-row{gap:14px 24px}
+  .metrics{grid-template-columns:repeat(2,1fr);margin-top:60px}
+  .case{padding:34px 24px;gap:20px}
+  .results{grid-template-columns:repeat(2,1fr)}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+@media print{
+  header,.ln-row,.closing .ln-row{display:none!important}
+  body{background:#fff;color:#000;font-size:11pt}
+  section{padding:18px 0;break-inside:avoid}
+  .metric b,.display,h2,.proj h3,.edu b{color:#000}
+  .panels,.panel{background:#fff;border-color:#ccc}
+}
+</style>
+</head>
+<body>
+
+<header id="bar">
+  <div class="wrap bar">
+    <nav class="menu" id="menu">
+      <a href="#skills">Skills</a>
+      <a href="#work">Experience</a>
+      <a href="#delivery">Delivery</a>
+      <a href="#projects">Projects</a>
+      <a href="#credentials">Credentials</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="wrap">
+    <h1 class="display">Jay <em>Dhumal</em></h1>
+    <p class="role">AI Engineer, Mumbai</p>
+    <div class="lede">
+      <p>
+        I am an AI Engineer based in Mumbai, building production agentic and generative
+        AI systems at Pentagon System and Services. My work covers multi agent workflows,
+        retrieval augmented chatbots, Text to SQL agents, enterprise LLM gateways and
+        document intelligence pipelines, most of it running on Amazon Bedrock and
+        Azure AI Foundry.
+      </p>
+      <p>
+        I work hands on with LangGraph, LangChain and the Model Context Protocol, across
+        Claude, GPT and open weight models. What interests me is the part that decides
+        whether a system survives contact with real users: governance at the gateway,
+        typed outputs instead of free text, retrieval that can cite its source, and
+        guardrails for PII and prompt injection standing between the model and production.
+      </p>
+    </div>
+
+    <div class="ln-row">
+      <a class="ln" href="mailto:jaydhumal23@gmail.com">
+        jaydhumal23@gmail.com
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="ln" href="Jay-Dhumal-Resume.pdf" download>
+        Curriculum vitae
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v12m0 0l-4.5-4.5M12 16l4.5-4.5M5 19h14"/></svg>
+      </a>
+      <a class="ln" href="https://linkedin.com/in/jaydhumal" target="_blank" rel="noopener">
+        LinkedIn
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="ln" href="https://github.com/Jay1683" target="_blank" rel="noopener">
+        GitHub
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><b>400+</b><span>API operations governed</span></div>
+      <div class="metric"><b>800+</b><span>Documents in production RAG</span></div>
+      <div class="metric"><b>50%</b><span>Faster analytics queries</span></div>
+      <div class="metric"><b>50+</b><span>Practitioners trained</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SKILLS ========== -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="label"><i>01</i>&nbsp;&nbsp;Capabilities</span>
+      <h2>The stack I build with.</h2>
+      <p>From the agent framework and retrieval layer through to the platform governance that keeps a deployment safe in an enterprise.</p>
+    </div>
+
+    <div class="panels panels--6 rv">
+      <div class="panel">
+        <h3>Agentic AI</h3>
+        <ul><li>LangGraph</li><li>LangChain</li><li>Multi Agent Systems</li><li>Tool Calling Agents</li><li>MCP</li><li>Structured Outputs</li><li>Pydantic</li><li>Prompt Engineering</li></ul>
+      </div>
+      <div class="panel">
+        <h3>RAG &amp; Retrieval</h3>
+        <ul><li>RAG Pipelines</li><li>ChromaDB</li><li>OpenSearch Vector Store</li><li>Embeddings</li><li>Text to SQL</li><li>Schema Aware Agents</li></ul>
+      </div>
+      <div class="panel">
+        <h3>LLM Platforms</h3>
+        <ul><li>Amazon Bedrock</li><li>Bedrock Agents</li><li>Bedrock Guardrails</li><li>Azure AI Foundry</li><li>Azure OpenAI</li><li>Groq</li><li>OpenAI APIs</li></ul>
+      </div>
+      <div class="panel">
+        <h3>LLM Governance</h3>
+        <ul><li>AI Gateway Design</li><li>Entra ID Policy Validation</li><li>Token Limit Monitoring</li><li>PII Guardrails</li><li>Prompt Injection Defence</li><li>Azure API Management</li></ul>
+      </div>
+      <div class="panel">
+        <h3>Multimodal &amp; Document AI</h3>
+        <ul><li>Azure Document Intelligence</li><li>Textract</li><li>Rekognition</li><li>Transcribe</li><li>Comprehend</li></ul>
+      </div>
+      <div class="panel">
+        <h3>Build &amp; Ship</h3>
+        <ul><li>Python</li><li>Chainlit</li><li>Streamlit</li><li>Flask</li><li>PostgreSQL</li><li>Agent Memory</li><li>Git</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== EXPERIENCE ========== -->
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="label"><i>02</i>&nbsp;&nbsp;Experience</span>
+      <h2>Where I've shipped.</h2>
+    </div>
+
+    <article class="role-item rv">
+      <div class="role-when">Dec 2024 to Present<span>Mumbai, India</span></div>
+      <div>
+        <div class="role-head"><h3>AI Engineer, AI Services</h3><span class="org">Pentagon System and Services</span></div>
+        <ul class="role-body">
+          <li>Designed an enterprise AI Gateway on Azure as the single governed entry point for every AI and LLM API in the organisation, with custom policies, Entra ID validation and a per user token limit analytics dashboard, then extended the same pattern to GitHub Copilot.</li>
+          <li>Routed Claude Desktop and Claude CLI traffic through that gateway for a 15 to 20 user pilot with Azure Workbook monitoring, built on Azure API Management governing 400+ operations across 30+ APIs.</li>
+          <li>Deployed Azure Foundry models and connected them securely to GitHub Copilot and Claude Code inside VS Code over a private tunnel for an enterprise client.</li>
+          <li>Built a Text to SQL GenAI agent on Amazon Bedrock and LangChain that reads a natural language question, generates the SQL and returns the answer, cutting query time by 50% and putting self service analytics in reach of non technical teams.</li>
+          <li>Shipped a production RAG chatbot over 800+ Statements of Work, pairing document retrieval with context aware generation so knowledge buried in contracts becomes searchable.</li>
+          <li>Contributed to a supervisor led multi agent FinOps system on Bedrock spanning cost analysis, optimisation and resource intelligence agents, with RAG over OpenSearch Serverless, Guardrails, and prompt caching to hold inference cost down.</li>
+          <li>Contributed to Bedrock document agents on Claude Haiku 4.5, combining Textract OCR, human in the loop review and Guardrails for PII and prompt injection inside a private VPC.</li>
+          <li>Contributed to GenAI driven underwriting for an NBFC, where Bedrock models generate banking and bureau summaries alongside adaptive, borrower specific questions through a prompt refinement feedback loop.</li>
+          <li>Delivered agentic AI for HR operations from onboarding through to exit interviews, a RAG chatbot over CloudTrail logs monitoring Amazon Q licence usage, and agentic analytics over ticket resolution data.</li>
+          <li>Prepared the case studies, architecture diagrams and evidence for the AWS Gen AI and Agentic AI Competency audit, which passed.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="role-item rv">
+      <div class="role-when">May 2024 to Oct 2024<span>Mumbai, India</span></div>
+      <div>
+        <div class="role-head"><h3>Data Scientist and AI/ML Trainer</h3><span class="org">Nettech India</span></div>
+        <ul class="role-body">
+          <li>Trained 50+ participants in Python, NLP and machine learning, covering TF IDF, bag of words and applied project work, with completion above 95%.</li>
+          <li>Delivered hands on instruction and guided learners through building and deploying their own AI projects end to end.</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== CLIENT DELIVERY ========== -->
+<section id="delivery">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="label"><i>03</i>&nbsp;&nbsp;Client delivery</span>
+      <h2>Shipped for clients.</h2>
+      <p>Engagements delivered with the AI Services and Cloud team at Pentagon, from enterprise API governance through to multi agent systems on Bedrock.</p>
+    </div>
+
+    <div class="cases">
+
+      <article class="case rv">
+        <span class="label">AWS Gen AI and Agentic AI&nbsp;&nbsp;·&nbsp;&nbsp;<i>Case 01</i></span>
+        <h3>Bedrock Document Agents for Lending Operations</h3>
+        <p class="challenge">KYC, income and invoice reviews were manual and took three to five days, while customer queries averaged 48 hours to resolve.</p>
+        <div class="block">
+          <span class="label">What we built</span>
+          <ul>
+            <li>Three Bedrock agents on Claude Haiku 4.5: a RAG chatbot, document analytics and a support bot.</li>
+            <li>Textract OCR with Lambda validation, and human in the loop review for any document the system flags.</li>
+            <li>OpenSearch Serverless knowledge base so staff can query loan and policy documents directly.</li>
+            <li>Bedrock Guardrails for PII, prompt injection and content filtering, all inside a private VPC.</li>
+          </ul>
+        </div>
+        <p class="stack">Amazon Bedrock · Claude Haiku 4.5 · Textract · Lambda · OpenSearch Serverless · Guardrails</p>
+      </article>
+
+      <article class="case rv">
+        <span class="label">AWS Gen AI and Agentic AI&nbsp;&nbsp;·&nbsp;&nbsp;<i>Case 04</i></span>
+        <h3>Multi Agent FinOps System on Bedrock</h3>
+        <p class="challenge">Limited visibility into AWS cost drivers, and FinOps processes run by hand, meant savings were being missed.</p>
+        <div class="block">
+          <span class="label">What we built</span>
+          <ul>
+            <li>A supervisor led system of Bedrock agents covering cost analysis, cost optimisation, resource intelligence and data efficiency.</li>
+            <li>Lambda orchestration handling session management and tool execution across the agent set.</li>
+            <li>RAG over S3 and OpenSearch Serverless, drawing live data from RDS and external APIs.</li>
+            <li>Private API Gateway, WAF, Guardrails and cross region replication for security and resilience.</li>
+          </ul>
+        </div>
+        <div class="block">
+          <span class="label">Outcomes</span>
+          <ul>
+            <li>Real time cost visibility across the whole AWS estate.</li>
+            <li>Anomaly detection and spend forecasting in place of manual review.</li>
+            <li>Lower inference cost, through prompt caching and routing.</li>
+          </ul>
+        </div>
+        <p class="stack">Bedrock · Lambda · OpenSearch Serverless · API Gateway · RDS · S3</p>
+      </article>
+
+      <article class="case rv">
+        <span class="label">AWS Data and Analytics&nbsp;&nbsp;·&nbsp;&nbsp;<i>Case 02</i></span>
+        <h3>Distributed Spark Processing for a Global Research Publisher</h3>
+        <p class="challenge">Legacy on premises infrastructure could not keep up with growing manuscript data, seasonal submission peaks or AI model workloads.</p>
+        <div class="block">
+          <span class="label">What we built</span>
+          <ul>
+            <li>A replication agent migrating MS SQL Server data into Multi-AZ Amazon RDS.</li>
+            <li>Spark ETL on auto scaling EMR, structuring the data into an S3 data lake.</li>
+            <li>Athena and QuickSight, giving teams real time visibility into throughput and turnaround.</li>
+            <li>SageMaker endpoints serving the client's AI models, with cross region replication for disaster recovery.</li>
+          </ul>
+        </div>
+        <div class="results">
+          <div><b>~80%</b><span>Reduction in processing time</span></div>
+          <div><b>10&times;</b><span>Data processing capacity</span></div>
+          <div><b>~85%</b><span>Less manual operational effort</span></div>
+        </div>
+        <p class="stack">AWS DMS · RDS · EMR · S3 · Glue · Athena · QuickSight · SageMaker</p>
+      </article>
+
+      <article class="case rv">
+        <span class="label">Azure Platform Engineering&nbsp;&nbsp;·&nbsp;&nbsp;<i>Case 03</i></span>
+        <h3>Enterprise API Management Platform</h3>
+        <p class="challenge">400+ API operations across 30+ APIs, LLM requests among them, needed a single governed place to live.</p>
+        <div class="block">
+          <span class="label">What we delivered</span>
+          <ul>
+            <li>Azure API Management deployed with Entra ID verification on every call.</li>
+            <li>Two instances: a Developer tier for development, and Standard v2 for UAT and production.</li>
+            <li>Customised network configuration, hardened for an enterprise security posture.</li>
+            <li>An automated CI/CD pipeline carrying OpenAPI configuration cleanly from development through to production.</li>
+          </ul>
+        </div>
+        <div class="results">
+          <div><b>400+</b><span>API operations governed</span></div>
+          <div><b>30+</b><span>APIs behind one gateway</span></div>
+          <div><b>2</b><span>Tiered environments</span></div>
+        </div>
+        <p class="stack">Azure API Management · Entra ID · OpenAPI · CI/CD</p>
+      </article>
+
+      <article class="case rv">
+        <span class="label">AWS Data and Analytics&nbsp;&nbsp;·&nbsp;&nbsp;<i>Case 03</i></span>
+        <h3>Resilient Loan Processing and Reporting Platform</h3>
+        <p class="challenge">Peak hour traffic and reporting ran against the same database, slowing loan processing, and business reports were still compiled by hand.</p>
+        <div class="block">
+          <span class="label">What we built</span>
+          <ul>
+            <li>EC2 Auto Scaling behind an Application Load Balancer, spread across multiple Availability Zones.</li>
+            <li>RDS SQL Server Multi-AZ with a read replica, isolating analytics from live transactions.</li>
+            <li>A Glue pipeline into S3 with QuickSight dashboards, for near real time insight in place of hand built reports.</li>
+            <li>WAF, KMS, CloudTrail and S3 cross region replication, the whole estate built as code with CloudFormation.</li>
+          </ul>
+        </div>
+        <p class="stack">EC2 · ALB · RDS SQL Server · Glue · S3 · QuickSight · WAF · KMS · CloudTrail · CloudFormation</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROJECTS ========== -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="label"><i>04</i>&nbsp;&nbsp;Selected work</span>
+      <h2>Things I've built.</h2>
+      <p>Built on my own time, outside client work. Agents, retrieval systems and extraction pipelines, each taken from the model layer through to a working interface.</p>
+    </div>
+
+    <article class="proj rv">
+      <div class="proj-when">Sept 2026</div>
+      <div>
+        <h3>Covenant Extraction AI Agent</h3>
+        <ul>
+          <li>Extracts text from scanned Debenture Trust Deeds with Azure Document Intelligence, then passes it to an Azure AI Foundry model for covenant discovery against RBI and SEBI compliance checks.</li>
+          <li>Enforces typed Pydantic schemas on the model output, so every covenant comes back structured and machine readable rather than as free text a human still has to parse.</li>
+        </ul>
+        <p class="stack">Azure Document Intelligence · Azure AI Foundry · Pydantic · Python</p>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="proj-when">Feb 2026</div>
+      <div>
+        <h3>Tangarin, an Agentic Text to SQL System</h3>
+        <ul>
+          <li>LLM agent that reasons over real database context through schema inspection and query execution tools, rather than guessing at table structure from the question alone.</li>
+          <li>PostgreSQL backed conversation memory, so a follow up question keeps the context of everything asked before it in the session.</li>
+          <li>Authenticated Chainlit interface, giving analysts self service answers without writing a line of SQL.</li>
+        </ul>
+        <p class="stack">Python · LangGraph · LangChain · Groq · PostgreSQL · Chainlit</p>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="proj-when">In development</div>
+      <div>
+        <h3>Lore, an Agentic Skills Assistant</h3>
+        <ul>
+          <li>Agent that decides when to invoke pluggable SKILL.md skills, through a two stage intent classifier rather than a single prompt.</li>
+          <li>Routes uploaded documents between full context and RAG by token count, so a short file skips retrieval entirely and a long one does not overflow.</li>
+          <li>Runs skill scripts inside a sandbox and produces real .docx output rather than text pretending to be a document.</li>
+        </ul>
+        <p class="stack">LangGraph · Groq · ChromaDB · Sentence Transformers · Streamlit</p>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="proj-when">Sept 2025</div>
+      <div>
+        <h3>Multimodal Sentiment Analysis Pipeline</h3>
+        <ul>
+          <li>Reads sentiment for a lending organisation from three signals at once: the words spoken, the facial expression and the speech itself.</li>
+          <li>Synchronises three AWS AI services at sentence level, resolving them into a single unified report instead of three disagreeing ones.</li>
+        </ul>
+        <p class="stack">Amazon Comprehend · Rekognition · Transcribe Call Analytics · Python</p>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="proj-when"></div>
+      <div>
+        <h3>Inventra, an MCP Tool Server with LangGraph Agent</h3>
+        <ul>
+          <li>Multi service Model Context Protocol system exposing JWT secured tools over Streamable HTTP.</li>
+          <li>A LangGraph agent consumes those tools, leaving the server authoritative over exactly what the model is permitted to do.</li>
+        </ul>
+        <p class="stack">MCP · LangGraph · Flask · PostgreSQL</p>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="proj-when"></div>
+      <div>
+        <h3>Context Vault, an AI Chat Memory Extension</h3>
+        <ul>
+          <li>Chrome extension that saves AI chat transcripts and reinjects them as context, carrying a conversation across ChatGPT and Claude sessions.</li>
+        </ul>
+        <p class="stack">Chrome Extension · JavaScript</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ========== CREDENTIALS ========== -->
+<section id="credentials">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="label"><i>05</i>&nbsp;&nbsp;Credentials</span>
+      <h2>Certifications &amp; education.</h2>
+    </div>
+
+    <div class="panels rv">
+      <div class="panel">
+        <h3>Certifications</h3>
+        <ul>
+          <li class="row"><span>Azure AI Apps and Agents Developer Associate, AI-103</span><em>Microsoft, 2026</em></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Education</h3>
+        <div class="edu">
+          <div>
+            <b>B.Sc. Computer Science</b>
+            <span>Mumbai University, 2021 to 2024</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact">
+  <div class="wrap closing rv">
+    <span class="label"><i>06</i>&nbsp;&nbsp;Contact</span>
+    <h2 style="margin-top:22px">Let's build<br><em style="font-style:italic">something good.</em></h2>
+    <p>I'm open to AI Engineer and agentic AI roles. Email reaches me fastest, and I answer everything.</p>
+    <div class="ln-row">
+      <a class="ln" href="mailto:jaydhumal23@gmail.com">jaydhumal23@gmail.com</a>
+      <a class="ln" href="tel:+918691941062">+91 86919 41062</a>
+      <a class="ln" href="https://linkedin.com/in/jaydhumal" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="ln" href="https://github.com/Jay1683" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© <span id="yr">2026</span> Jay Dhumal</span>
+    <nav>
+      <a href="#skills">Skills</a><a href="#work">Experience</a><a href="#delivery">Delivery</a>
+      <a href="#projects">Projects</a><a href="Jay-Dhumal-Resume.pdf" download>CV</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---- sticky header ---- */
+const bar = document.getElementById('bar');
+const stick = () => bar.classList.toggle('stuck', scrollY > 14);
+stick(); addEventListener('scroll', stick, {passive:true});
+
+/* ---- mobile menu ---- */
+const burger = document.getElementById('burger'), menu = document.getElementById('menu');
+burger.onclick = () => {
+  const open = menu.classList.toggle('open');
+  burger.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+};
+menu.addEventListener('click', e => {
+  if (e.target.tagName === 'A') { menu.classList.remove('open'); burger.classList.remove('open'); }
+});
+
+/* ---- reveal on scroll ---- */
+const io = new IntersectionObserver(es => es.forEach((e, i) => {
+  if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), (i % 3) * 90); io.unobserve(e.target); }
+}), {threshold:.14, rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+</script>
+</body>
+</html>
